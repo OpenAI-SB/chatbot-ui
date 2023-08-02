@@ -18,8 +18,13 @@ export const ChatbarSettings = () => {
   const { t } = useTranslation('sidebar');
   const [isSettingDialogOpen, setIsSettingDialog] = useState<boolean>(false);
 
+  // 默认关闭上下文
+  if (localStorage.getItem('withContext') === null) {
+    localStorage.setItem('withContext', 'false');
+  }
+
   const [withContext, setWithContext] = useState<boolean>(
-    ['true', null].includes(localStorage.getItem('withContext')) ? true : false,
+    localStorage.getItem('withContext') === 'true',
   );
 
   const {

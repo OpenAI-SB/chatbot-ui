@@ -268,10 +268,12 @@ const Home = ({
 
     if (apiKeyQuery) {
       apiKey = apiKeyQuery as string;
-      localStorage.setItem('apiKey', apiKey);
+      localStorage.setItem('apiKeyQuery', apiKey);
+
       window.location.href = `${window.location.origin}${window.location.pathname}`;
     } else {
-      apiKey = localStorage.getItem('apiKey');
+      apiKey =
+        localStorage.getItem('apiKeyQuery') || localStorage.getItem('apiKey');
     }
 
     if (serverSideApiKeyIsSet) {

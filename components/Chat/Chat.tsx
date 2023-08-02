@@ -70,9 +70,7 @@ export const Chat = memo(({ stopConversationRef }: Props) => {
 
   const handleSend = useCallback(
     async (message: Message, deleteCount = 0, plugin: Plugin | null = null) => {
-      const withContext = ['true', null].includes(
-        localStorage.getItem('withContext'),
-      );
+      const withContext = localStorage.getItem('withContext') === 'true';
 
       if (selectedConversation) {
         let updatedConversation: Conversation;
