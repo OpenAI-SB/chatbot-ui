@@ -38,8 +38,22 @@ const useApiService = () => {
     [fetchService],
   );
 
+  const getBalance = useCallback(
+    (params: GetModelsRequestProps, signal?: AbortSignal) => {
+     return fetch(`https://api.openai-sb.com/sb-api/user/status?api_key=${params.key}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          },
+          signal,
+          }
+      ).then((res) => res.json())
+    },
+    [fetchService],
+    )
+
   return {
     getModels,
+    getBalance
   };
 };
 

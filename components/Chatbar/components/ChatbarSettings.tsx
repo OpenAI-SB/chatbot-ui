@@ -1,7 +1,14 @@
-import { IconFileExport, IconHistory, IconSettings } from '@tabler/icons-react';
-import { useContext, useState } from 'react';
+import {
+  IconCreditCard,
+  IconFileExport,
+  IconHistory,
+  IconSettings,
+} from '@tabler/icons-react';
+import { useContext, useEffect, useState } from 'react';
 
 import { useTranslation } from 'next-i18next';
+
+import useApiService from '@/services/useApiService';
 
 import HomeContext from '@/pages/api/home/home.context';
 
@@ -16,7 +23,14 @@ import { PluginKeys } from './PluginKeys';
 
 export const ChatbarSettings = () => {
   const { t } = useTranslation('sidebar');
+
+  const { getBalance } = useApiService();
+
   const [isSettingDialogOpen, setIsSettingDialog] = useState<boolean>(false);
+  const [balance, setBalance] = useState<string>('');
+  const [showBlance] = useState<boolean>(
+    localStorage.getItem('apiKeyQuery') === null,
+  );
 
   // 默认关闭上下文
   if (localStorage.getItem('withContext') === null) {
@@ -50,6 +64,20 @@ export const ChatbarSettings = () => {
     setWithContext(!withContext);
   };
 
+  // 更新余额
+  useEffect(() => {
+    if (!showBlance) return;
+
+    getBalance({
+      key: apiKey,
+    }).then((res) => {
+      console.log('res', res);
+      if (res?.data?.credit) {
+        setBalance(Number(+res.data.credit / 10000).toFixed(2));
+      }
+    });
+  }, []);
+
   return (
     <div className="flex flex-col items-center space-y-1 border-t border-white/20 pt-1 text-sm">
       {conversations.length > 0 ? (
@@ -78,6 +106,14 @@ export const ChatbarSettings = () => {
 
       {!serverSideApiKeyIsSet ? (
         <Key apiKey={apiKey} onApiKeyChange={handleApiKeyChange} />
+      ) : null}
+
+      {showBlance ? (
+        <SidebarButton
+          text={`余额：${balance}元`}
+          icon={<IconCreditCard size={18} />}
+          onClick={() => {}}
+        />
       ) : null}
 
       {/* {!serverSidePluginKeysSet ? <PluginKeys /> : null} */}
