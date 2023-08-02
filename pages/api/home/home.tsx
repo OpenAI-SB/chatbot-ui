@@ -39,6 +39,7 @@ import Promptbar from '@/components/Promptbar';
 import HomeContext from './home.context';
 import { HomeInitialState, initialState } from './home.state';
 
+import qs from 'qs';
 import { v4 as uuidv4 } from 'uuid';
 
 interface Props {
@@ -259,7 +260,19 @@ const Home = ({
       });
     }
 
-    const apiKey = localStorage.getItem('apiKey');
+    const apiKeyQuery = qs.parse(window.location.search, {
+      ignoreQueryPrefix: true,
+    }).key;
+
+    let apiKey: string | null;
+
+    if (apiKeyQuery) {
+      apiKey = apiKeyQuery as string;
+      localStorage.setItem('apiKey', apiKey);
+      window.location.href = `${window.location.origin}${window.location.pathname}`;
+    } else {
+      apiKey = localStorage.getItem('apiKey');
+    }
 
     if (serverSideApiKeyIsSet) {
       dispatch({ field: 'apiKey', value: '' });
