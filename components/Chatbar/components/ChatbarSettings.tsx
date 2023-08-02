@@ -21,6 +21,8 @@ import ChatbarContext from '../Chatbar.context';
 import { ClearConversations } from './ClearConversations';
 import { PluginKeys } from './PluginKeys';
 
+import { Button, Modal, Space } from 'antd';
+
 export const ChatbarSettings = () => {
   const { t } = useTranslation('sidebar');
 
@@ -29,6 +31,7 @@ export const ChatbarSettings = () => {
   const [isSettingDialogOpen, setIsSettingDialog] = useState<boolean>(false);
   const [balance, setBalance] = useState<string>('');
   const [showBlance] = useState<boolean>(true);
+  const [errorModal, setErrorModal] = useState<any>(null);
 
   // 默认关闭上下文
   if (localStorage.getItem('withContext') === null) {
@@ -64,17 +67,42 @@ export const ChatbarSettings = () => {
 
   // 更新余额
   useEffect(() => {
-    if (!showBlance) return;
+    const controller = new AbortController();
+    const signal = controller.signal;
 
-    getBalance({
-      key: apiKey,
-    }).then((res) => {
-      console.log('res', res);
+    getBalance(
+      {
+        key: apiKey,
+      },
+      signal,
+    ).then((res) => {
       if (res?.data?.credit) {
-        setBalance(Number(+res.data.credit / 10000).toFixed(2));
+        const balance = Number(+res.data.credit / 10000).toFixed(2);
+        setBalance(balance);
+
+        if (+balance < 5) {
+          errorModal && errorModal.destroy();
+
+          const modal = Modal.error({
+            title: '余额不足',
+            content: '前往充值',
+            okText: '前往',
+            onOk() {
+              window.open(
+                'https://openai-sb.com/guide/pricing.html#%E5%85%85%E5%80%BC%E4%B8%8E%E6%9F%A5%E7%9C%8B%E4%BD%99%E9%A2%9D',
+              );
+            },
+          });
+
+          setErrorModal(modal);
+        }
       }
     });
-  }, []);
+
+    return () => {
+      controller.abort();
+    };
+  }, [apiKey]);
 
   return (
     <div className="flex flex-col items-center space-y-1 border-t border-white/20 pt-1 text-sm">

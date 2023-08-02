@@ -33,7 +33,7 @@ const useApiService = () => {
           'Content-Type': 'application/json',
         },
         signal,
-      });
+      })
     },
     [fetchService],
   );
@@ -48,7 +48,7 @@ const useApiService = () => {
           }
       ).then((res) => res.json())
     },
-    [fetchService],
+    [],
     )
 
   return {
