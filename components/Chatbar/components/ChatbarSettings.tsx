@@ -28,9 +28,7 @@ export const ChatbarSettings = () => {
 
   const [isSettingDialogOpen, setIsSettingDialog] = useState<boolean>(false);
   const [balance, setBalance] = useState<string>('');
-  const [showBlance] = useState<boolean>(
-    localStorage.getItem('apiKeyQuery') === null,
-  );
+  const [showBlance] = useState<boolean>(true);
 
   // 默认关闭上下文
   if (localStorage.getItem('withContext') === null) {
