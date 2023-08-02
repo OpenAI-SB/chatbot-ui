@@ -41,3 +41,7 @@ html {
 pre:has(div.codeblock) {
   padding: 0;
 }
+
+.ant-btn[type='button'] {
+  background-color: #1677ff;
+}

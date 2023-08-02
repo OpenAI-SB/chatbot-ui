@@ -26,6 +26,7 @@ export const Key: FC<Props> = ({ apiKey, onApiKeyChange }) => {
   const handleUpdateKey = (newKey: string) => {
     onApiKeyChange(newKey.trim());
     setIsChanging(false);
+    localStorage.removeItem('apiKeyQuery');
   };
 
   useEffect(() => {
