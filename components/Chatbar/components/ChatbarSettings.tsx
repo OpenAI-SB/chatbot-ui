@@ -1,4 +1,4 @@
-import { IconFileExport, IconSettings } from '@tabler/icons-react';
+import { IconFileExport, IconHistory, IconSettings } from '@tabler/icons-react';
 import { useContext, useState } from 'react';
 
 import { useTranslation } from 'next-i18next';
@@ -18,6 +18,10 @@ export const ChatbarSettings = () => {
   const { t } = useTranslation('sidebar');
   const [isSettingDialogOpen, setIsSettingDialog] = useState<boolean>(false);
 
+  const [withContext, setWithContext] = useState<boolean>(
+    ['true', null].includes(localStorage.getItem('withContext')) ? true : false,
+  );
+
   const {
     state: {
       apiKey,
@@ -35,6 +39,11 @@ export const ChatbarSettings = () => {
     handleExportData,
     handleApiKeyChange,
   } = useContext(ChatbarContext);
+
+  const changeWithContext = () => {
+    localStorage.setItem('withContext', (!withContext).toString());
+    setWithContext(!withContext);
+  };
 
   return (
     <div className="flex flex-col items-center space-y-1 border-t border-white/20 pt-1 text-sm">
@@ -56,11 +65,17 @@ export const ChatbarSettings = () => {
         onClick={() => setIsSettingDialog(true)}
       />
 
+      <SidebarButton
+        text={withContext ? '关闭上下文' : '开启上下文'}
+        icon={<IconHistory size={18} />}
+        onClick={() => changeWithContext()}
+      />
+
       {!serverSideApiKeyIsSet ? (
         <Key apiKey={apiKey} onApiKeyChange={handleApiKeyChange} />
       ) : null}
 
-      {!serverSidePluginKeysSet ? <PluginKeys /> : null}
+      {/* {!serverSidePluginKeysSet ? <PluginKeys /> : null} */}
 
       <SettingDialog
         open={isSettingDialogOpen}

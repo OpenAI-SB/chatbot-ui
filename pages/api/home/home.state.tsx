@@ -30,7 +30,7 @@ export interface HomeInitialState {
 }
 
 export const initialState: HomeInitialState = {
-  apiKey: '',
+  apiKey: process.env.OPENAI_API_KEY || '',
   loading: false,
   pluginKeys: [],
   lightMode: 'dark',
