@@ -30,9 +30,6 @@ export const ChatbarSettings = () => {
 
   const [isSettingDialogOpen, setIsSettingDialog] = useState<boolean>(false);
   const [balance, setBalance] = useState<string>('');
-  const [showBlance] = useState<boolean>(
-    localStorage.getItem('apiKeyQuery') === null,
-  );
   const [errorModal, setErrorModal] = useState<any>(null);
 
   // 默认关闭上下文
@@ -136,11 +133,11 @@ export const ChatbarSettings = () => {
         <Key apiKey={apiKey} onApiKeyChange={handleApiKeyChange} />
       ) : null}
 
-      <SidebarButton
+      {/* <SidebarButton
         text={`余额：${balance}元`}
         icon={<IconCreditCard size={18} />}
         onClick={() => {}}
-      />
+      /> */}
 
       {/* {!serverSidePluginKeysSet ? <PluginKeys /> : null} */}
 
