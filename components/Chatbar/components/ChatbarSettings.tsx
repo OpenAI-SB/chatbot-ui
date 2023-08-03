@@ -136,13 +136,11 @@ export const ChatbarSettings = () => {
         <Key apiKey={apiKey} onApiKeyChange={handleApiKeyChange} />
       ) : null}
 
-      {showBlance ? (
-        <SidebarButton
-          text={`余额：${balance}元`}
-          icon={<IconCreditCard size={18} />}
-          onClick={() => {}}
-        />
-      ) : null}
+      <SidebarButton
+        text={`余额：${balance}元`}
+        icon={<IconCreditCard size={18} />}
+        onClick={() => {}}
+      />
 
       {/* {!serverSidePluginKeysSet ? <PluginKeys /> : null} */}
 
